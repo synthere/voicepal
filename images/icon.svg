@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4285F4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34A853;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)" />
+  <g fill="white">
+    <!-- 声音波形图标 -->
+    <path d="M48,44 L48,84 L68,84 L88,104 L88,24 L68,44 L48,44 Z" />
+    <!-- 翻译符号 -->
+    <path d="M40,64 L40,104 M30,94 L50,94" stroke="white" stroke-width="8" stroke-linecap="round" />
+    <path d="M88,64 L88,104 M78,94 L98,94" stroke="white" stroke-width="8" stroke-linecap="round" />
+    <!-- 连接线 -->
+    <path d="M40,74 C50,64 78,64 88,74" stroke="white" stroke-width="4" stroke-linecap="round" fill="none" />
+  </g>
+</svg>

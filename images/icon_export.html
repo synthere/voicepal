@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VoicePal图标导出</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .icon-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .icon-sizes {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .icon-size {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 10px 0;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>VoicePal图标导出</h1>
+  
+  <div class="icon-container">
+    <h2>图标预览</h2>
+    <svg id="iconSvg" width="128" height="128" viewBox="0 0 128 128">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#6A11CB;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#2575FC;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <circle cx="64" cy="64" r="60" fill="url(#grad1)" />
+      <g fill="white">
+        <path d="M64,32 C57.373,32 52,37.373 52,44 L52,68 C52,74.627 57.373,80 64,80 C70.627,80 76,74.627 76,68 L76,44 C76,37.373 70.627,32 64,32 Z" />
+        <path d="M44,60 L44,68 C44,83.464 56.536,96 72,96 L72,104 L56,104 L56,112 L88,112 L88,104 L72,104 L72,96 C87.464,96 100,83.464 100,68 L100,60 L92,60 L92,68 C92,79.046 83.046,88 72,88 C60.954,88 52,79.046 52,68 L52,60 L44,60 Z" />
+      </g>
+    </svg>
+    
+    <div class="icon-sizes">
+      <div class="icon-size">
+        <p>16x16</p>
+        <svg width="16" height="16" viewBox="0 0 128 128">
+          <use href="#iconSvg" />
+        </svg>
+      </div>
+      <div class="icon-size">
+        <p>48x48</p>
+        <svg width="48" height="48" viewBox="0 0 128 128">
+          <use href="#iconSvg" />
+        </svg>
+      </div>
+      <div class="icon-size">
+        <p>128x128</p>
+        <svg width="128" height="128" viewBox="0 0 128 128">
+          <use href="#iconSvg" />
+        </svg>
+      </div>
+    </div>
+    
+    <button id="downloadSvg" class="button">下载SVG</button>
+    <button id="downloadPng16" class="button">下载16x16 PNG</button>
+    <button id="downloadPng48" class="button">下载48x48 PNG</button>
+    <button id="downloadPng128" class="button">下载128x128 PNG</button>
+  </div>
+  
+  <h2>SVG代码</h2>
+  <pre id="svgCode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" style="stop-color:#6A11CB;stop-opacity:1" /&gt;
+      &lt;stop offset="100%" style="stop-color:#2575FC;stop-opacity:1" /&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;circle cx="64" cy="64" r="60" fill="url(#grad1)" /&gt;
+  &lt;g fill="white"&gt;
+    &lt;path d="M64,32 C57.373,32 52,37.373 52,44 L52,68 C52,74.627 57.373,80 64,80 C70.627,80 76,74.627 76,68 L76,44 C76,37.373 70.627,32 64,32 Z" /&gt;
+    &lt;path d="M44,60 L44,68 C44,83.464 56.536,96 72,96 L72,104 L56,104 L56,112 L88,112 L88,104 L72,104 L72,96 C87.464,96 100,83.464 100,68 L100,60 L92,60 L92,68 C92,79.046 83.046,88 72,88 C60.954,88 52,79.046 52,68 L52,60 L44,60 Z" /&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;</pre>
+
+  <script>
+    // 下载SVG文件
+    document.getElementById('downloadSvg').addEventListener('click', function() {
+      const svgCode = document.getElementById('svgCode').textContent;
+      const blob = new Blob([svgCode], {type: 'image/svg+xml'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'icon.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // 下载PNG文件
+    function downloadPng(size) {
+      const svgElement = document.getElementById('iconSvg');
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      const img = new Image();
+      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(svgBlob);
+      
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        
+        const pngUrl = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = pngUrl;
+        a.download = `icon${size}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+      
+      img.src = url;
+    }
+    
+    document.getElementById('downloadPng16').addEventListener('click', function() {
+      downloadPng(16);
+    });
+    
+    document.getElementById('downloadPng48').addEventListener('click', function() {
+      downloadPng(48);
+    });
+    
+    document.getElementById('downloadPng128').addEventListener('click', function() {
+      downloadPng(128);
+    });
+  </script>
+</body>
+</html>

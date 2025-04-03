@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频声音翻译器</title>
+  <style>
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      width: 320px;
+      margin: 0;
+      padding: 15px;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+    
+    h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    select, input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+    
+    .button:hover {
+      background-color: #45a049;
+    }
+    
+    .button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    .button.stop {
+      background-color: #f44336;
+    }
+    
+    .button.stop:hover {
+      background-color: #d32f2f;
+    }
+    
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+      display: none;
+    }
+    
+    .status.success {
+      background-color: #dff0d8;
+      color: #3c763d;
+      display: block;
+    }
+    
+    .status.error {
+      background-color: #f2dede;
+      color: #a94442;
+      display: block;
+    }
+    
+    .setting-info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🎙️</div>
+    <h1>VoicePal</h1>
+  </div>
+  
+  <div class="form-group">
+    <label for="ttsService">语音合成服务</label>
+    <select id="ttsService">
+      <option value="browser">浏览器内置语音</option>
+      <option value="elevenlabs">ElevenLabs高质量语音</option>
+      <option value="customapi">自定义API服务</option>
+    </select>
+    <div class="setting-info">选择用于字幕转语音的服务</div>
+  </div>
+  
+  <!-- ElevenLabs设置 -->
+  <div id="elevenLabsSettings" style="display: none;">
+    <div class="form-group">
+      <label for="elevenLabsApiKey">ElevenLabs API密钥</label>
+      <input type="password" id="elevenLabsApiKey" placeholder="输入您的ElevenLabs API密钥">
+      <div class="setting-info">在 <a href="https://elevenlabs.io/app" target="_blank">ElevenLabs网站</a> 获取API密钥</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="elevenLabsVoiceId">ElevenLabs语音</label>
+      <select id="elevenLabsVoiceId">
+        <option value="loading">加载中...</option>
+      </select>
+      <button id="refreshVoices" class="button" style="margin-top: 5px; background-color: #2196F3; width: auto; padding: 5px 10px;">刷新语音列表</button>
+      <div class="setting-info">选择ElevenLabs语音模型</div>
+    </div>
+  </div>
+  
+  <!-- 自定义API设置 -->
+  <div id="customApiSettings" style="display: none;">
+    <div class="form-group">
+      <label for="customApiUrl">API服务器地址</label>
+      <input type="text" id="customApiUrl" placeholder="例如: http://localhost:8000">
+      <div class="setting-info">输入自定义TTS API服务器地址</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="customApiRefAudio">参考音频 (可选)</label>
+      <input type="file" id="customApiRefAudio" accept="audio/*">
+      <div class="setting-info">上传参考音频文件 (可选)</div>
+    </div>
+    
+    <button id="testCustomApi" class="button" style="margin-top: 5px; background-color: #2196F3;">测试API连接</button>
+  </div>
+  
+  <div class="form-group">
+    <label for="voiceLanguage">浏览器语音语言</label>
+    <select id="voiceLanguage">
+      <option value="zh-CN" selected>中文</option>
+      <option value="en">英语</option>
+      <option value="ja">日语</option>
+      <option value="ko">韩语</option>
+      <option value="fr">法语</option>
+      <option value="de">德语</option>
+      <option value="es">西班牙语</option>
+      <option value="ru">俄语</option>
+    </select>
+    <div class="setting-info">选择浏览器内置语音合成的语言（不使用ElevenLabs时）</div>
+  </div>
+  
+  <div class="form-group info-box">
+    <p>此扩展可以使用浏览器内置的Web Speech API或ElevenLabs API将YouTube视频字幕转换为语音播放。请确保视频已开启字幕！</p>
+  </div>
+  
+  <button id="startButton" class="button">开始字幕转语音</button>
+  <button id="stopButton" class="button stop" style="display: none;">停止字幕转语音</button>
+  
+  <div id="status" class="status"></div>
+  
+  <div class="footer">
+    VoicePal v1.0 | 将字幕转换为语音播放
+  </div>
+  
+  <script src="js/popup.js"></script>
+</body>
+</html>
