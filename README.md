@@ -1,4 +1,5 @@
-# VoicePal Chrome扩展
+# ![icon48](https://github.com/user-attachments/assets/c7531203-bb93-43d9-ad4d-464516a4a234) VoicePal Chrome扩展
+
 
 这是一个Chrome扩展，可以将YouTube视频字幕转换为语音播放。
 
