@@ -2,7 +2,7 @@
 
 
 这是一个Chrome扩展，可以将YouTube视频字幕转换为语音播放。
-
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1Fdkw-6l6sg/0.jpg)](https://www.youtube.com/watch?v=1Fdkw-6l6sg)
 ## 功能特点
 
 - **将YouTube视频字幕转换为语音播放**
